@@ -26,6 +26,7 @@ public class CalculatorRouterConfig {
                 .GET(pathPatten, isOperation("-"),calculatorHandler::minusHandler)
                 .GET(pathPatten, isOperation("*"),calculatorHandler::multiplyHandler)
                 .GET(pathPatten, isOperation("/"),calculatorHandler::divisionHandler)
+                .GET(pathPatten, req -> ServerResponse.badRequest().bodyValue("OP should be + - * /"))
                 .build();
     }
 
