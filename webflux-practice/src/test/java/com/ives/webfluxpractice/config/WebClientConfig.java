@@ -23,9 +23,49 @@ public class WebClientConfig {
                 .build();
     }
 
+    /**
     private Mono<ClientResponse> sessionToken(ClientRequest request, ExchangeFunction ex){
         System.out.println("generating session token");
         ClientRequest clientRequest = ClientRequest.from(request).headers(httpHeaders -> httpHeaders.setBearerAuth("some-lengthy-jwt")).build();
         return ex.exchange(clientRequest);
+    }*/
+
+    /**
+     * 改寫交換機制
+     * @param request
+     * @param ex
+     * @return
+     */
+    private Mono<ClientResponse> sessionToken(ClientRequest request, ExchangeFunction ex){
+        ClientRequest clientRequest = request.attribute("auth")
+                .map(v -> "basic".equals(v)
+                        ? withBasicAuth(request)
+                        : withOAuth(request)
+                ).orElse(request);
+        return ex.exchange(clientRequest);
+    }
+
+    /**
+     * 如果是auth basic時會被引導至此驗證
+     * @param request
+     * @return
+     */
+    private ClientRequest withBasicAuth(ClientRequest request){
+        System.out.println("Basic Auth");
+        return ClientRequest.from(request)
+                .headers(h->h.setBasicAuth("username","password"))
+                .build();
+    }
+
+    /**
+     * 如果是auth 不為basic時會執行OAuth驗證
+     * @param request
+     * @return
+     */
+    private ClientRequest withOAuth(ClientRequest request){
+        System.out.println("OAuth");
+        return ClientRequest.from(request)
+                .headers(h->h.setBearerAuth("some-token"))
+                .build();
     }
 }
