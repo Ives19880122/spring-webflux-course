@@ -4,6 +4,7 @@ import com.ives.productservicepractice.dto.ProductDto;
 import com.ives.productservicepractice.repository.ProductRepository;
 import com.ives.productservicepractice.util.EntityDtoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Range;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -42,5 +43,10 @@ public class ProductService {
 
     public Mono<Void> deleteProduct(String id){
         return repository.deleteById(id);               // 要回傳Mono包裹的Void
+    }
+
+    public Flux<ProductDto> getProductByPriceRange(int min, int max){
+        return repository.findByPriceBetween(Range.closed(min,max))
+                .map(EntityDtoUtil::toDto);
     }
 }

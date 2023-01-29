@@ -43,4 +43,10 @@ public class ProductController {
     public Mono<Void> deleteProduct(@PathVariable String id){
         return service.deleteProduct(id);
     }
+
+    @GetMapping("price-range")
+    public Flux<ProductDto> getByPriceRange(@RequestParam("min") int min,
+                                            @RequestParam("max") int max){
+        return service.getProductByPriceRange(min,max);
+    }
 }
