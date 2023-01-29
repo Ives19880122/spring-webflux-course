@@ -19,6 +19,8 @@ public class Lec04HeadersTest extends BaseTest{
                 .uri("reactive-math/multiply")
                 .bodyValue(buildRequestDto(5, 3))
                 .headers(h->h.set("someKey","someVal"))
+                // 方法1 設定basicAuth
+                //.headers(h->h.setBasicAuth("username","password"))
                 .retrieve()
                 .bodyToMono(Response.class)
                 .log();
