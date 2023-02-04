@@ -3,11 +3,13 @@ package com.ives.uesrservicepractice.service;
 import com.ives.uesrservicepractice.dto.TransactionRequestDto;
 import com.ives.uesrservicepractice.dto.TransactionResponseDto;
 import com.ives.uesrservicepractice.dto.TransactionStatus;
+import com.ives.uesrservicepractice.entity.UserTransaction;
 import com.ives.uesrservicepractice.repository.UserRepository;
 import com.ives.uesrservicepractice.repository.UserTransactionRepository;
 import com.ives.uesrservicepractice.util.EntityDtoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -28,4 +30,7 @@ public class TransactionService {
                 .defaultIfEmpty(EntityDtoUtil.toDto(requestDto,TransactionStatus.DECLINED));
     }
 
+    public Flux<UserTransaction> getByUserId(Integer userId){
+        return userTransactionRepository.findByUserId(userId);
+    }
 }
