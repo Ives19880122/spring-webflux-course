@@ -10,5 +10,14 @@ CREATE TABLE user_transaction(
     user_id bigint,
     amount int,
     transaction_date timestamp,
-    foreign key (user_id) references users(id)
+    -- 修正異常，避免刪除bug
+    foreign key (user_id) references users(id) on delete cascade
 );
+
+INSERT INTO users
+    (name, balance)
+    values
+    ('sam',1000),
+    ('mike',1200),
+    ('jake',800),
+    ('marshal',2000);
