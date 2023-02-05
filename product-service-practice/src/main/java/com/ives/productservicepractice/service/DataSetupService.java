@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.util.concurrent.ThreadLocalRandom;
+
 @Service
 public class DataSetupService implements CommandLineRunner {
 
@@ -21,7 +24,14 @@ public class DataSetupService implements CommandLineRunner {
         ProductDto p4 = new ProductDto("pixel",650);
 
         Flux.just(p1,p2,p3,p4)
+                .concatWith(newProducts())
                 .flatMap(productDto -> service.insertProduct(Mono.just(productDto)))
                 .subscribe(System.out::println);
+    }
+
+    private Flux<ProductDto> newProducts(){
+        return Flux.range(1,100)
+                .delayElements(Duration.ofSeconds(1))
+                .map(i-> new ProductDto("Product-"+i, ThreadLocalRandom.current().nextInt(1,100)));
     }
 }
