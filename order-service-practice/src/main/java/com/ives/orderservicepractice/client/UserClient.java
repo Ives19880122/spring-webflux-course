@@ -1,9 +1,7 @@
 package com.ives.orderservicepractice.client;
 
-import com.ives.orderservicepractice.dto.ProductDto;
 import com.ives.orderservicepractice.dto.TransactionRequestDto;
 import com.ives.orderservicepractice.dto.TransactionResponseDto;
-import com.ives.orderservicepractice.dto.UserDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
