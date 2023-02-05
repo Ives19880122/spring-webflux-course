@@ -37,6 +37,7 @@ public class EntityDtoUtil {
     public static PurchaseOrderResponseDto getPurchaseOrderResponseDto(PurchaseOrder purchaseOrder){
         PurchaseOrderResponseDto responseDto = new PurchaseOrderResponseDto();
         BeanUtils.copyProperties(purchaseOrder,responseDto);
+        responseDto.setOrderId(purchaseOrder.getId());
         return responseDto;
     }
 }
