@@ -1,4 +1,4 @@
-package com.ives.webfluxpractice;
+package com.ives.webfluxpractice.webclient;
 
 import com.ives.webfluxpractice.dto.Response;
 import org.junit.jupiter.api.Test;

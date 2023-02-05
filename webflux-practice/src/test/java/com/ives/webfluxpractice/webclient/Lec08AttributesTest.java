@@ -1,4 +1,4 @@
-package com.ives.webfluxpractice;
+package com.ives.webfluxpractice.webclient;
 
 import com.ives.webfluxpractice.dto.MultiplyRequestDto;
 import com.ives.webfluxpractice.dto.Response;

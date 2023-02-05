@@ -1,4 +1,4 @@
-package com.ives.webfluxpractice;
+package com.ives.webfluxpractice.webclient;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

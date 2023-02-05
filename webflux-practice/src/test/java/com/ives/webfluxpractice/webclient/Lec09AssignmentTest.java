@@ -1,4 +1,4 @@
-package com.ives.webfluxpractice;
+package com.ives.webfluxpractice.webclient;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

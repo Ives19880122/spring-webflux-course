@@ -1,4 +1,4 @@
-package com.ives.webfluxpractice;
+package com.ives.webfluxpractice.webclient;
 
 import com.ives.webfluxpractice.dto.MultiplyRequestDto;
 import com.ives.webfluxpractice.dto.Response;
@@ -8,19 +8,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-public class Lec04HeadersTest extends BaseTest{
+public class Lec03PostRequestTest extends BaseTest{
 
     @Autowired
     WebClient webClient;
 
     @Test
-    public void headersTest(){
+    public void postTest(){
         Mono<Response> responseMono = webClient.post()
                 .uri("reactive-math/multiply")
                 .bodyValue(buildRequestDto(5, 3))
-                .headers(h->h.set("someKey","someVal"))
-                // 方法1 設定basicAuth
-                //.headers(h->h.setBasicAuth("username","password"))
                 .retrieve()
                 .bodyToMono(Response.class)
                 .log();
