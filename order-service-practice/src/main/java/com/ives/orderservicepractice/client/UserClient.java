@@ -2,9 +2,11 @@ package com.ives.orderservicepractice.client;
 
 import com.ives.orderservicepractice.dto.TransactionRequestDto;
 import com.ives.orderservicepractice.dto.TransactionResponseDto;
+import com.ives.orderservicepractice.dto.UserDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -27,4 +29,11 @@ public class UserClient {
                 .bodyToMono(TransactionResponseDto.class);
     }
 
+    public Flux<UserDto> getAllUsers(){
+        return this.webClient
+                .get()
+                .uri("all")
+                .retrieve()
+                .bodyToFlux(UserDto.class);
+    }
 }
