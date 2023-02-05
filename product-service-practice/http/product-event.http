@@ -1,0 +1,11 @@
+### 商品資訊列表(會隨著新增商品更新資訊)
+GET http://localhost:8091/product/stream
+
+### 商品資訊新增
+POST http://localhost:8091/product
+Content-Type: application/json
+
+{
+  "description": "harry potter book",
+  "price": 10
+}
