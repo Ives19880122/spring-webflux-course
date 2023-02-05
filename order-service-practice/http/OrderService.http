@@ -1,0 +1,20 @@
+### order insert
+POST http://localhost:8080/order
+Content-Type: application/json
+
+{
+ "productId":"63df56fd0fa8b85b770fe1fc",
+ "userId":1
+}
+
+### product all
+GET http://localhost:8091/product/all
+
+### user all
+GET http://localhost:8092/user/all
+
+### user transaction
+GET http://localhost:8092/user/transaction?userId=1
+
+### user order all
+GET http://localhost:8080/order/user/1
