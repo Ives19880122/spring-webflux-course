@@ -14,6 +14,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @WebFluxTest(ReactiveMathController.class)
 public class Lec02ControllerGetTest {
 
@@ -52,6 +54,25 @@ public class Lec02ControllerGetTest {
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBodyList(Response.class)
+                .hasSize(3);
+    }
+
+    @Test
+    public void streamingResponseTest(){
+        // given
+        Flux<Response> flux = Flux.range(1, 3)
+                .map(Response::new)
+                .delayElements(Duration.ofMillis(100));
+        // when
+        Mockito.when(service.multiplicationTable(Mockito.anyInt())).thenReturn(flux);
+
+        // then
+        client.get()
+                .uri("/reactive-math/table/{number}/stream", 5)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM)
                 .expectBodyList(Response.class)
                 .hasSize(3);
     }
