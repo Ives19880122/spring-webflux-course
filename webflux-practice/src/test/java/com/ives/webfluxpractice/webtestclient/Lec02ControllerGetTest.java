@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @WebFluxTest(ReactiveMathController.class)
@@ -23,7 +24,7 @@ public class Lec02ControllerGetTest {
     ReactiveMathService service;
 
     @Test
-    public void fluentAssertionTest(){
+    public void singleResponseTest(){
         // 使用Mockito進行Service呼叫方法的模擬
         Mockito.when(service.findSquare(Mockito.anyInt())).thenReturn(Mono.just(new Response(25)));
 
@@ -34,6 +35,25 @@ public class Lec02ControllerGetTest {
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBody(Response.class)
                 .value(res-> Assertions.assertThat(res.getOutput()).isEqualTo(25));
+    }
+
+    @Test
+    public void listResponseTest(){
+        // given
+        Flux<Response> flux = Flux.range(1, 3)
+                .map(Response::new);
+
+        // when
+        Mockito.when(service.multiplicationTable(Mockito.anyInt())).thenReturn(flux);
+
+        // then
+        client.get()
+                .uri("/reactive-math/table/{number}", 5)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBodyList(Response.class)
+                .hasSize(3);
     }
 
 }
