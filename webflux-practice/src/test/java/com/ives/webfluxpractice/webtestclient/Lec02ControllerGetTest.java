@@ -1,5 +1,6 @@
 package com.ives.webfluxpractice.webtestclient;
 
+import com.ives.webfluxpractice.controller.ParamsController;
 import com.ives.webfluxpractice.controller.ReactiveMathController;
 import com.ives.webfluxpractice.dto.Response;
 import com.ives.webfluxpractice.service.ReactiveMathService;
@@ -11,12 +12,16 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.Duration;
+import java.util.Map;
+import java.util.function.Function;
 
-@WebFluxTest(ReactiveMathController.class)
+@WebFluxTest(controllers = {ReactiveMathController.class, ParamsController.class})
 public class Lec02ControllerGetTest {
 
     @Autowired
@@ -75,6 +80,25 @@ public class Lec02ControllerGetTest {
                 .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM)
                 .expectBodyList(Response.class)
                 .hasSize(3);
+    }
+
+    @Test
+    public void paramsTest(){
+        // given
+        Map<String, Integer> params = Map.of(
+                "count", 10,
+                "page", 20
+        );
+
+        Function<UriBuilder, URI> uriBuilderURIFunctionUsingParams = uriBuilder -> uriBuilder.path("/jobs/search").query("count={count}&page={page}").build(params);
+
+        // then
+        client.get()
+                .uri(uriBuilderURIFunctionUsingParams)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(Integer.class)
+                .hasSize(2).contains(10,20);
     }
 
 }
